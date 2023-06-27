@@ -33,6 +33,10 @@ builder.Services.AddDbContext<PracticeItDbContext>(context =>
 
 var app = builder.Build();
 
+using var serviceScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
+var dbContext = serviceScope.ServiceProvider.GetService<PracticeItDbContext>();
+dbContext?.Database.Migrate();
+
 app.MapControllers();
 
 app.Run();
