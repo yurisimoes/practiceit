@@ -1,4 +1,5 @@
 using Api.Context;
+using Api.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -6,22 +7,26 @@ using Newtonsoft.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers().AddControllersAsServices().AddNewtonsoftJson(config =>
-{
-    config.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-    config.SerializerSettings.Converters.Add(new StringEnumConverter
-    {
-        NamingStrategy = new KebabCaseNamingStrategy()
-    });
-    config.SerializerSettings.ContractResolver = new DefaultContractResolver
-    {
-        IgnoreIsSpecifiedMembers = true,
-        NamingStrategy = new CamelCaseNamingStrategy
+builder.Services
+    .AddControllers(x => x.SlugifyRouteName())
+    .AddControllersAsServices()
+    .AddNewtonsoftJson(
+        config =>
         {
-            ProcessDictionaryKeys = true
-        }
-    };
-});
+            config.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            config.SerializerSettings.Converters.Add(new StringEnumConverter
+            {
+                NamingStrategy = new KebabCaseNamingStrategy()
+            });
+            config.SerializerSettings.ContractResolver = new DefaultContractResolver
+            {
+                IgnoreIsSpecifiedMembers = true,
+                NamingStrategy = new CamelCaseNamingStrategy
+                {
+                    ProcessDictionaryKeys = true
+                }
+            };
+        });
 
 builder.Services.AddHttpContextAccessor();
 
