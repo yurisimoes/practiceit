@@ -1,4 +1,4 @@
-using Api.Entities;
+using Api.Entities.Cards;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
@@ -13,6 +13,7 @@ public class PracticeItDbContext : DbContext
     }
 
     public DbSet<Card> Cards { get; set; }
+    public DbSet<Deck> DecksOfCards { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

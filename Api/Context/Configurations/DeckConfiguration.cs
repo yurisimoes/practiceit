@@ -4,11 +4,12 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Api.Context.Configurations;
 
-public class CardConfiguration : IEntityTypeConfiguration<Card>
+public class DeckConfiguration : IEntityTypeConfiguration<Deck>
 {
 
-    public void Configure(EntityTypeBuilder<Card> builder)
+    public void Configure(EntityTypeBuilder<Deck> builder)
     {
         builder.Property(x => x.Id).UseIdentityAlwaysColumn();
+        builder.HasMany(x => x.Cards).WithOne().HasForeignKey(x => x.DeckId);
     }
 }
