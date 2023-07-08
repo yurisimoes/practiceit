@@ -1,0 +1,22 @@
+<button [routerLink]="['create']">new deck</button>
+
+<ng-container *ngIf="decks$ | async as decks">
+  <div *ngFor="let d of decks">
+    <app-deck [deck]="d"></app-deck>
+  </div>
+</ng-container>
+
+<div *ngFor="let g of games$ | async">
+  {{g.id}}
+</div>
+
+<button (click)="playGames()" type="button">play</button>
+
+
+
+
+
+
+
+
+
