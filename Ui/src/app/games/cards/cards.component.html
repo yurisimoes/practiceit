@@ -1,0 +1,10 @@
+<div>
+  title: {{deck.title}}
+  description: {{deck.description}}
+  <div *ngFor="let c of deck.cards; let i = index"
+       [ngClass]="{ 'correct': isInputCorrect(valueControls['control-' + i].value, c.value, i) }">
+    key: {{c.key}}
+    <input [formControl]="valueControls['control-' + i]" placeholder="Enter a value">
+    <!--    value: {{c.value}}-->
+  </div>
+</div>

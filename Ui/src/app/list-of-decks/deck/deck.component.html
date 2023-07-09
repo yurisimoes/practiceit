@@ -1,18 +1,19 @@
-<div (click)="playGames(deck.id)" class="flex p-5 mt-8 space-x-4 items-start shadow-xl max-w-sm rounded-md min-w-[40%]">
+<div class="flex p-5 mt-8 space-x-4 items-start shadow-xl max-w-sm rounded-md min-w-[40%]">
   <div class="relative w-16 h-24 bg-gray-500 rounded-lg overflow-hidden">
     <div class="absolute inset-0 flex items-center justify-center">
-      <div class="w-12 h-16 bg-white rounded-full flex items-center justify-center">
+      <div (click)="playGames(deck.id)" class="w-12 h-16 bg-white rounded-full flex items-center justify-center">
         <p class="text-black text-xl font-semibold">{{deck.cardsCount}}</p>
       </div>
     </div>
   </div>
   <div class="flex-1">
     <div class="max-w-2xl flex items-center">
-      <h2 (click)="playGame(deck.id)" class="text-black font-semibold cursor-pointer text-xl line-clamp-1 break-all flex-1 underline">
+      <h2 (click)="playGame(deck.id)"
+          class="text-black font-semibold cursor-pointer text-xl line-clamp-1 break-all flex-1 underline">
         {{deck.title}}
       </h2>
       <div class="ml-auto">
-<!--        <span class="text-black text-xl font-semibold">RATING HERE</span>-->
+        <!--        <span class="text-black text-xl font-semibold">RATING HERE</span>-->
         <button type="button" [routerLink]="[deck.id, 'edit']">editar</button>
         <button type="button" (click)="deleteDeck(deck.id)">delete</button>
       </div>

@@ -1,5 +1,10 @@
 import { createStore } from '@ngneat/elf';
-import { withEntities, selectAllEntities, setEntities, deleteEntities, getEntitiesIds } from '@ngneat/elf-entities';
+import {
+  withEntities,
+  selectAllEntities,
+  setEntities,
+  deleteEntities,
+} from '@ngneat/elf-entities';
 import { Injectable } from '@angular/core';
 
 export interface Deck {
@@ -9,9 +14,9 @@ export interface Deck {
   cardsCount: number;
 }
 
-const store = createStore({name: 'decks'}, withEntities<Deck>());
+const store = createStore({ name: 'decks' }, withEntities<Deck>());
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class DecksRepository {
   decks$ = store.pipe(selectAllEntities());
 
@@ -20,6 +25,6 @@ export class DecksRepository {
   }
 
   deleteDeck(id: Deck['id']) {
-    store.update(deleteEntities(id))
+    store.update(deleteEntities(id));
   }
 }

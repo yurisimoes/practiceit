@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from '@angular/core';
-import { Observable, tap } from "rxjs";
+import { tap } from "rxjs";
 import { DeckOfCards, CardsRepository } from "./cards.repository";
 
 @Injectable({
@@ -20,7 +20,9 @@ export class CardsService {
   }
 
   getById(id: number) {
-    return this.http.get<DeckOfCards>(`/api/decks-of-cards/${id}`).pipe(tap(this.repo.setDeck));
+    return this.http
+      .get<DeckOfCards>(`/api/decks-of-cards/${id}`)
+      .pipe(tap(this.repo.setDeck));
   }
 
   delete(id: number) {

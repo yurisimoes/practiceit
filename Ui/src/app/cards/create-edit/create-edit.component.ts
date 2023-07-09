@@ -4,7 +4,7 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { FormArray, FormBuilder, FormGroup } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { finalize } from "rxjs";
-import { Card, CardsRepository } from "../cards.repository";
+import { CardsRepository } from "../cards.repository";
 import { CardsService } from "../cards.service";
 
 @Component({
