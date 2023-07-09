@@ -7,7 +7,7 @@ namespace Api.Context;
 public class PracticeItDbContext : DbContext
 {
 
-    public PracticeItDbContext(DbContextOptions dbContextOptions, IConfiguration configuration) : base(dbContextOptions)
+    public PracticeItDbContext(DbContextOptions dbContextOptions) : base(dbContextOptions)
     {
 
     }

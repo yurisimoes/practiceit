@@ -31,7 +31,7 @@ public class DecksOfCardsController : BaseController
     [HttpGet]
     public async Task<IActionResult> Get(CancellationToken ct)
     {
-        var decks = _dbContext.DecksOfCards.AsNoTracking().AsQueryable().Include(x => x.Cards).AsQueryable();
+        var decks = _dbContext.DecksOfCards.Include(x => x.Cards).AsNoTracking().AsQueryable();
         return Ok(await decks.ToListAsync(ct));
     }
 

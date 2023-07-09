@@ -14,13 +14,13 @@ public class GamesController : BaseController
     }
 
     [HttpPost]
-    public async Task<IActionResult> GetGame([FromBody] int[] ids, CancellationToken ct)
+    public async Task<IActionResult> GetGames([FromBody] int[] ids, CancellationToken ct)
     {
         var decks = _dbContext.DecksOfCards
-            .AsQueryable()
-            .AsNoTracking()
+            .Where(deck => ids.Contains(deck.Id))
             .Include(x => x.Cards)
-            .Where(deck => ids.Any(deckId => deckId == deck.Id))
+            .AsSplitQuery()
+            .AsNoTracking()
             .ToListAsync(ct);
         return Ok(await decks);
     }
