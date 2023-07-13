@@ -10,18 +10,24 @@ const routes: Routes = [
   {
     path: 'lists-of-decks',
     loadChildren: () =>
-      import('./list-of-decks/list-of-decks.module').then((m) => m.ListOfDecksModule),
+      import('./list-of-decks/list-of-decks.module').then(
+        (m) => m.ListOfDecksModule
+      ),
   },
   {
     path: 'games',
     loadChildren: () =>
       import('./games/games.module').then((m) => m.GamesModule),
   },
+  {
+    path: 'create-cards-deck',
+    loadChildren: () =>
+      import('./cards/cards.module').then((m) => m.CardsModule),
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule {
-}
+export class AppRoutingModule {}

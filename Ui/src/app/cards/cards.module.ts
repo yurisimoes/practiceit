@@ -7,7 +7,7 @@ import { CreateEditComponent } from "./create-edit/create-edit.component";
 
 const routes: Routes = [
   { path: '', component: CreateEditComponent },
-  { path: 'create', component: CreateEditComponent },
+  { path: 'create-cards-deck', component: CreateEditComponent },
   { path: ':id/edit', component: CreateEditComponent }
 ];
 

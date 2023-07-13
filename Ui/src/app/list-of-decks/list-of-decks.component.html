@@ -1,8 +1,8 @@
-<button [routerLink]="['create']">new deck</button>
-
 <ng-container *ngIf="decks$ | async as decks">
-  <div *ngFor="let d of decks">
-    <app-deck [deck]="d"></app-deck>
+  <div class="flex flex-wrap ">
+    <div *ngFor="let d of decks" class="w-1/3 px-2 pb-2">
+      <app-deck [deck]="d"></app-deck>
+    </div>
   </div>
 </ng-container>
 

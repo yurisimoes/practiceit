@@ -1,11 +1,20 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import "@fontsource/open-sans";
 
-html,
-body {
+html, body {
   height: 100%;
 }
+
+html {
+  overflow: hidden;
+}
+
+body {
+  overflow: scroll;
+}
+
 
 body {
   font-family: "Open Sans", sans-serif;

@@ -8,7 +8,7 @@ import {
   withUIEntities,
   UIEntitiesRef,
   upsertEntities,
-  deleteAllEntities,
+  deleteAllEntities, selectEntitiesCount,
 } from '@ngneat/elf-entities';
 import { Injectable } from '@angular/core';
 import { Card } from '../cards/cards.repository';
@@ -20,23 +20,31 @@ export interface Game {
   cards: Card[];
 }
 
+export interface GameToPlay {
+  id: number;
+  title: string;
+  description: string;
+  cardsCount: number;
+}
+
 const store = createStore(
   { name: 'game' },
   withEntities<Game>(),
-  withUIEntities<any>()
+  withUIEntities<GameToPlay>()
 );
 
 @Injectable({ providedIn: 'root' })
 export class GamesRepository {
   games$ = store.pipe(selectAllEntities());
   gamesToPlay$ = store.pipe(selectAllEntities({ ref: UIEntitiesRef }));
+  totalOfGamesToPlay$ = store.pipe(selectEntitiesCount({ ref: UIEntitiesRef }));
 
   setGames(game: Game[]) {
     store.update(setEntities(game));
   }
 
-  addGame(id: number) {
-    store.update(upsertEntities({ id: id }, { ref: UIEntitiesRef }));
+  addGame(game: GameToPlay) {
+    store.update(upsertEntities(game, { ref: UIEntitiesRef }));
   }
 
   deleteGame(id: number) {

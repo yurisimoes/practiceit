@@ -1,0 +1,33 @@
+<div class="fixed inset-0 flex z-50" *ngIf="showSideNav">
+  <div class="sidenav w-72 shadow-lg transform -translate-x-0" (@slideInOut.done)="animationDone($event)"
+       [@slideInOut]="showSideNav ? 'enter' : 'leave'" [ngClass]="{'show': showSideNav}">
+
+    <nav class="text-secondary w-full">
+      <div class="flex bg-gray-50 items-center justify-between p-4">
+
+<!--          <button type="button" (click)="playGames()" class="text-lg">play</button>-->
+          <fa-icon (click)="playGames()" class="cursor-pointer text-lg" icon="play"></fa-icon>
+
+        <span>Decks To Play</span>
+
+          <fa-icon (click)="clearGames()" class="cursor-pointer text-lg" icon="broom"></fa-icon>
+      </div>
+      <hr class="border-black">
+    </nav>
+
+    <div class="overflow-y-auto max-h-full">
+      <div *ngFor="let g of games$ | async; let lastItem = last" [class.pb-20]="lastItem" class="px-2 pb-2">
+        <app-deck [deck]="g"></app-deck>
+      </div>
+    </div>
+
+  </div>
+  <div class="flex-grow -z-50 bg-gray-50 opacity-50"
+       [@fade]="showSideNav ? 'enter' : 'leave'"
+       (click)="closeSideNav()"></div>
+</div>
+
+
+
+
+

@@ -1,0 +1,13 @@
+.sidenav {
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  right: 0;
+  background-color: #f1f1f1;
+  transform: translateX(-100%); /* Initial state outside the viewport */
+  transition: transform 300ms ease-in-out; /* Animation transition */
+}
+
+.sidenav.show {
+  transform: translateX(0%); /* Final state inside the viewport */
+}

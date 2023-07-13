@@ -1,38 +1,43 @@
 import { Component, Input } from '@angular/core';
-import { Router } from "@angular/router";
-import { GamesRepository } from "../../games/games.repository";
-import { Deck, DecksRepository } from "../decks.repository";
-import { ListsOfDecksService } from "../lists-of-decks.service";
+import { Router } from '@angular/router';
+import { tap } from 'rxjs';
+import { GamesRepository, GameToPlay } from '../../games/games.repository';
+import { GamesService } from "../../games/games.service";
+import { Deck, DecksRepository } from '../decks.repository';
+import { ListsOfDecksService } from '../lists-of-decks.service';
 
 @Component({
   selector: 'app-deck',
   templateUrl: './deck.component.html',
-  styleUrls: ['./deck.component.scss']
+  styleUrls: ['./deck.component.scss'],
 })
 export class DeckComponent {
-  @Input() deck!: Deck
-  private addedNumbers: number[] = [];
+  @Input() deck!: Deck;
 
-  constructor(private decksService: ListsOfDecksService, private repo: DecksRepository, private router: Router, private gamesRepo: GamesRepository) {
-  }
+  constructor(
+    private decksService: ListsOfDecksService,
+    private repo: DecksRepository,
+    public gamesService: GamesService,
+    private router: Router,
+    private gamesRepo: GamesRepository
+  ) {}
 
   deleteDeck(deckId: number) {
-    this.decksService.deleteDeck(deckId).subscribe(() => this.repo.deleteDeck(deckId))
+    this.decksService
+      .deleteDeck(deckId)
+      .pipe(
+        tap({
+          complete: () => {
+            this.gamesRepo.deleteGame(deckId);
+            this.repo.deleteDeck(deckId);
+          },
+        })
+      )
+      .subscribe();
   }
 
-  playGames(id: number) {
-    const index = this.addedNumbers.indexOf(id);
-    if (index !== -1) {
-      this.addedNumbers.splice(index, 1);
-      this.gamesRepo.deleteGame(id)
-    } else {
-      this.addedNumbers.push(id);
-      this.gamesRepo.addGame(id);
-    }
-  }
-
-  playGame(id: number) {
-    this.gamesRepo.addGame(id);
-    this.router.navigateByUrl('/games')
+  playGame(game: GameToPlay) {
+    this.gamesRepo.addGame(game);
+    this.router.navigateByUrl('/games');
   }
 }

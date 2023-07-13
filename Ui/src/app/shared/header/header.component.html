@@ -1,0 +1,21 @@
+<nav class="pb-4 text-secondary z-40 sticky top-0 w-full">
+  <div class="flex bg-gray-50 items-center justify-between p-4">
+    <div>
+      <span class="text-xl font-bold">PracticeIt</span>
+    </div>
+    <div class="flex items-center space-x-4">
+      <div *ngIf="totalOfGamesToPlay$ | async as n" class="relative">
+        <fa-icon class="text-lg mr-4 cursor-pointer" (click)="toggleSideNav()" icon="bars"></fa-icon>
+        <span
+          class="absolute top-0 right-0 inline-flex items-center justify-center w-5 h-5 text-xs font-medium bg-secondary text-white rounded-full transform -translate-y-1/2">{{n}}</span>
+      </div>
+      <fa-icon id="dropdown-button" [ngClass]="{'bg-gray-200': isOpenDropdown}" class="text-2xl cursor-pointer active:bg-gray-200 hover:bg-gray-200 rounded-full px-2" (click)="toggleDropdown()" icon="grip"></fa-icon>
+      <button type="button" class="text-lg ml-4">Sign In</button>
+    </div>
+  </div>
+  <hr class="border-black">
+</nav>
+<app-routes-dropdown class="absolute top-14 right-0" [isOpen]="isOpenDropdown" (click)="stopPropagation($event)" (isOpenChange)="isOpenDropdown = $event"
+></app-routes-dropdown>
+
+<app-side-nav [showSideNav]="showSideNav" (closeSideNavEvent)="toggleSideNav()"></app-side-nav>
