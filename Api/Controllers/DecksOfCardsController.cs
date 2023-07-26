@@ -22,10 +22,7 @@ public class DecksOfCardsController : BaseController
         var deck = dto.Adapt<Deck>();
         _dbContext.Add(deck);
         await _dbContext.SaveChangesAsync(ct);
-        return CreatedAtAction(nameof(GetById), new
-        {
-            id = deck.Id
-        }, deck);
+        return CreatedAtAction(nameof(GetById), new { id = deck.Id }, deck);
     }
 
     [HttpGet]
@@ -46,11 +43,10 @@ public class DecksOfCardsController : BaseController
     public async Task<IActionResult> Put(int id, [FromBody] DeckDto dto, CancellationToken ct)
     {
         var deck = await _dbContext.DecksOfCards.AsQueryable().Include(x => x.Cards).FirstOrDefaultAsync(x => x.Id == id, ct);
-        _dbContext.DecksOfCards.Update(dto.Adapt(deck));
+        _dbContext.DecksOfCards.Update(dto.Adapt(deck)!);
         await _dbContext.SaveChangesAsync(ct);
         return Ok(deck);
     }
-
 
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id, CancellationToken ct)
@@ -61,5 +57,4 @@ public class DecksOfCardsController : BaseController
         await _dbContext.SaveChangesAsync(ct);
         return NoContent();
     }
-
 }

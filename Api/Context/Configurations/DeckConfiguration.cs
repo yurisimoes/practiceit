@@ -6,7 +6,6 @@ namespace Api.Context.Configurations;
 
 public class DeckConfiguration : IEntityTypeConfiguration<Deck>
 {
-
     public void Configure(EntityTypeBuilder<Deck> builder)
     {
         builder.Property(x => x.Id).UseIdentityAlwaysColumn();

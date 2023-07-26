@@ -1,15 +1,13 @@
+using System.Reflection;
 using Api.Entities.Cards;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection;
 
 namespace Api.Context;
 
 public class PracticeItDbContext : DbContext
 {
-
     public PracticeItDbContext(DbContextOptions dbContextOptions) : base(dbContextOptions)
     {
-
     }
 
     public DbSet<Card> Cards { get; set; }

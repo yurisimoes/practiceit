@@ -18,12 +18,11 @@ public class DecksController : BaseController
     [HttpGet]
     public async Task<IActionResult> Get(CancellationToken ct)
     {
-        var decks = 
-            await _dbContext.DecksOfCards
-                .AsQueryable()
-                .AsNoTracking()
-                .ProjectToType<DecksResult>()
-                .ToListAsync(ct);
+        var decks = await _dbContext.DecksOfCards
+            .ProjectToType<DecksResult>()
+            .AsSplitQuery()
+            .AsNoTracking()
+            .ToListAsync(ct);
         return Ok(decks);
     }
 }

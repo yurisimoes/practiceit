@@ -1,17 +1,20 @@
 <form (ngSubmit)="save()" [formGroup]="form">
-  <div>
+  <div class="px-4">
     <label>Title</label>
-    <input type="text" formControlName="title">
+    <input type="text" class="my-input text-center" formControlName="title">
   </div>
-  <div>
+  <div class="px-4">
     <label>Description</label>
-    <input type="text" formControlName="description">
+    <span class="ml-1 text-gray-400 text-sm">(optional)</span>
+    <textarea type="text" class="my-input h-16" appTextAreaAutoresize formControlName="description"></textarea>
   </div>
-  <button type="button" (click)="addNewCard()">Add new card</button>
-  <button type="submit">Save</button>
+  <div class="px-4">
+    <button type="button" (click)="addNewCard()">Add new card</button>
+    <button type="submit">Save</button>
+  </div>
 <!--  justify-center-->
   <div formArrayName="cards" class="flex flex-wrap">
-    <div *ngFor="let _ of cards.controls; let i = index" class="p-1.5 flex items-center">
+    <div *ngFor="let _ of cards.controls; let i = index" class="px-3.5 py-2 flex items-center">
       <app-card [cardsForm]="getCardsControl(i)" [showRemoveButton]="cards.length > 1" (remove)="removeCard(i)"></app-card>
     </div>
   </div>
