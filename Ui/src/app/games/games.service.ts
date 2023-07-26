@@ -1,18 +1,24 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { tap } from "rxjs";
-import { Game, GamesRepository, GameToPlay } from "./games.repository";
+import { tap } from 'rxjs';
+import { Game, GamesRepository, GameToPlay } from './games.repository';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class GamesService {
   private decksAddedIds: number[] = [];
 
-  constructor(private http: HttpClient, private repo: GamesRepository) { }
+  constructor(private http: HttpClient, private repo: GamesRepository) {}
 
   getGames(ids: any[]) {
-    return this.http.post<Game[]>('/api/games', ids).pipe(tap(this.repo.setGames))
+    return this.http.post<Game[]>('/api/games', ids).pipe(
+      tap((x) => {
+        console.log(        x.map(x => x.title.toLowerCase()))
+        x.forEach(x => x.title.toLowerCase());
+        this.repo.setGames(x);
+      })
+    );
   }
 
   isGameAdded(id: number): boolean {

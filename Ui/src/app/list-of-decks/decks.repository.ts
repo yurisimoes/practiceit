@@ -1,11 +1,25 @@
+import { HttpClient } from '@angular/common/http';
 import { createStore } from '@ngneat/elf';
 import {
   withEntities,
   selectAllEntities,
   setEntities,
   deleteEntities,
+  deleteAllEntities,
+  addEntities,
 } from '@ngneat/elf-entities';
 import { Injectable } from '@angular/core';
+import {
+  deleteAllPages,
+  getPaginationData,
+  hasPage,
+  setPage,
+  skipWhilePageExists,
+  updatePaginationData,
+  withPagination,
+} from '@ngneat/elf-pagination';
+import { tap } from 'rxjs';
+import { PaginatedData } from '../shared/models/PaginatedData';
 
 export interface Deck {
   id: number;
@@ -14,11 +28,17 @@ export interface Deck {
   cardsCount: number;
 }
 
-const store = createStore({ name: 'decks' }, withEntities<Deck>());
+const store = createStore(
+  { name: 'decks' },
+  withEntities<Deck>(),
+  withPagination()
+);
 
 @Injectable({ providedIn: 'root' })
 export class DecksRepository {
   decks$ = store.pipe(selectAllEntities());
+
+  constructor(private http: HttpClient) {}
 
   setDecks(decks: Deck[]) {
     store.update(setEntities(decks));
@@ -27,4 +47,46 @@ export class DecksRepository {
   deleteDeck(id: Deck['id']) {
     store.update(deleteEntities(id));
   }
+
+  get(obj: { search?: string; page?: number; perPage?: number }) {
+    console.log(obj)
+    return this.http
+      .get<PaginatedData<Deck>>(`/api/decks?${new URLSearchParams(obj as any)}`)
+      .pipe(
+        tap((paginatedData) => {
+          const { data, ...paginationData } = paginatedData;
+          store.update(
+            addEntities(data),
+            updatePaginationData(paginationData),
+            setPage(
+              paginationData.currentPage,
+              data.map((c) => c.id)
+            )
+          );
+        }),
+        skipWhilePageExists(store, obj.page!),
+      );
+  }
+
+  get paginationData() {
+    return store.query(getPaginationData());
+  }
+
+  get currentPage(): number {
+    return this.paginationData.currentPage;
+  }
+
+  get isLast() {
+    return (
+      this.currentPage ==
+      Math.ceil(this.paginationData.total / this.paginationData.perPage)
+    );
+  }
+
+  hasPage = (page: number) => store.query(hasPage(page));
+
+  clearCache = () => {
+    store.update(deleteAllPages());
+    store.update(deleteAllEntities());
+  };
 }

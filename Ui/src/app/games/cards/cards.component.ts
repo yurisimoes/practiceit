@@ -23,7 +23,7 @@ export class CardsComponent implements OnChanges {
   isInputCorrect(value: string, card: string, index: number) {
     const cardAtIndex = this.deck.cards[index];
     return (
-      value.length === cardAtIndex.value.length && value === cardAtIndex.value
+      value.length === cardAtIndex.value.length && value.toLowerCase() === cardAtIndex.value.toLowerCase()
     );
   }
 }

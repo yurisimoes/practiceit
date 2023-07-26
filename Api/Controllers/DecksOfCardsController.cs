@@ -28,14 +28,14 @@ public class DecksOfCardsController : BaseController
     [HttpGet]
     public async Task<IActionResult> Get(CancellationToken ct)
     {
-        var decks = _dbContext.DecksOfCards.Include(x => x.Cards).AsNoTracking().AsQueryable();
+        var decks = _dbContext.DecksOfCards.AsSplitQuery().AsNoTracking().Include(x => x.Cards).AsQueryable();
         return Ok(await decks.ToListAsync(ct));
     }
 
     [HttpGet("{id:int}")]
     public async Task<IActionResult> GetById(int id, CancellationToken ct)
     {
-        var deck = _dbContext.DecksOfCards.AsNoTracking().AsQueryable().Include(x => x.Cards).FirstOrDefaultAsync(x => x.Id == id, ct);
+        var deck = _dbContext.DecksOfCards.AsSplitQuery().AsNoTracking().AsQueryable().Include(x => x.Cards).FirstOrDefaultAsync(x => x.Id == id, ct);
         return Ok(await deck);
     }
 

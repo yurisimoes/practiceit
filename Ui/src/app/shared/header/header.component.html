@@ -15,7 +15,7 @@
   </div>
   <hr class="border-black">
 </nav>
-<app-routes-dropdown class="absolute top-14 right-0" [isOpen]="isOpenDropdown" (click)="stopPropagation($event)" (isOpenChange)="isOpenDropdown = $event"
+<app-routes-dropdown class="absolute top-14 right-0 z-50" [isOpen]="isOpenDropdown" (click)="stopPropagation($event)" (isOpenChange)="isOpenDropdown = $event"
 ></app-routes-dropdown>
 
 <app-side-nav [showSideNav]="showSideNav" (closeSideNavEvent)="toggleSideNav()"></app-side-nav>

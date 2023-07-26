@@ -35,7 +35,9 @@ builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddDbContext<PracticeItDbContext>(context =>
 {
-    context.UseNpgsql(builder.Configuration.GetConnectionString("default")).UseSnakeCaseNamingConvention();
+    context
+        .UseNpgsql(builder.Configuration.GetConnectionString("default"), o => o.UseNodaTime())
+        .UseSnakeCaseNamingConvention();
 });
 
 TypeAdapterConfig.GlobalSettings.AllowImplicitDestinationInheritance = true;
@@ -51,6 +53,7 @@ var app = builder.Build();
 using var serviceScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope();
 var dbContext = serviceScope.ServiceProvider.GetService<PracticeItDbContext>();
 dbContext?.Database.Migrate();
+PracticeItDbSeeder.Seed(dbContext);
 
 app.MapControllers();
 

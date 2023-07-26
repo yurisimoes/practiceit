@@ -1,6 +1,8 @@
+using Api.Entities;
 using System.Reflection;
 using Api.Entities.Cards;
 using Microsoft.EntityFrameworkCore;
+using NodaTime;
 
 namespace Api.Context;
 
@@ -17,5 +19,20 @@ public class PracticeItDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+    }
+
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        var now = Instant.FromDateTimeOffset(DateTimeOffset.Now);
+        var addedOrModifiedEntries = ChangeTracker.Entries().Where(x => x.State == EntityState.Added || x.State == EntityState.Modified);
+        foreach (var entry in addedOrModifiedEntries)
+        {
+            if (entry.Entity is ITimeStamp timeStamp && timeStamp.CreatedAt == default)
+            {
+                timeStamp.CreatedAt = now;
+            }
+        }
+
+        return base.SaveChangesAsync(cancellationToken);
     }
 }

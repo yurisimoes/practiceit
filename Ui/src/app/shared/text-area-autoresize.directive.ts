@@ -1,17 +1,18 @@
-import { Directive, ElementRef, HostListener, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Directive,
+  ElementRef,
+  HostListener,
+} from '@angular/core';
 
 @Directive({
   selector: '[appTextAreaAutoresize]',
 })
-export class TextAreaAutoresizeDirective implements OnInit {
-  private readonly maxHeight = 200
-
+export class TextAreaAutoresizeDirective implements AfterViewInit {
   constructor(private elementRef: ElementRef) {}
 
-  ngOnInit(): void {
-    if (this.elementRef.nativeElement.scrollHeight) {
-      setTimeout(() => this.resize());
-    }
+  ngAfterViewInit(): void {
+    this.resize();
   }
 
   @HostListener('input')
@@ -21,9 +22,7 @@ export class TextAreaAutoresizeDirective implements OnInit {
 
   resize() {
     this.elementRef.nativeElement.style.height = 'auto';
-    this.elementRef.nativeElement.style.height = Math.min(
-      this.elementRef.nativeElement.scrollHeight,
-      this.maxHeight
-    ) + 'px';
+    this.elementRef.nativeElement.style.height =
+      Math.min(this.elementRef.nativeElement.scrollHeight, 200) + 'px';
   }
 }

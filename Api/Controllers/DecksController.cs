@@ -1,5 +1,6 @@
 using Api.Context;
 using Api.Dtos;
+using Api.Pagination;
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -16,13 +17,14 @@ public class DecksController : BaseController
     }
 
     [HttpGet]
-    public async Task<IActionResult> Get(CancellationToken ct)
+    public async Task<IActionResult> Get([FromQuery] string? search, CancellationToken ct, [FromQuery] int page = 1, [FromQuery] int perPage = 30)
     {
-        var decks = await _dbContext.DecksOfCards
-            .ProjectToType<DecksResult>()
-            .AsSplitQuery()
-            .AsNoTracking()
-            .ToListAsync(ct);
-        return Ok(decks);
+        search = search?.ToLower();
+        var decks = _dbContext.DecksOfCards.AsSplitQuery().AsNoTracking().OrderByDescending(x => x.CreatedAt).Include(x => x.Cards).AsQueryable();
+        if (!string.IsNullOrEmpty(search))
+        {
+            decks = decks.Where(x => x.Title.ToLower().Contains(search));
+        }
+        return Ok(await decks.ProjectToType<DecksResult>().Paginate(ct, page, perPage));
     }
 }

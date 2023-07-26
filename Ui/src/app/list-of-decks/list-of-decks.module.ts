@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { RouterModule, Routes } from "@angular/router";
 import { ListOfDecksComponent } from './list-of-decks.component';
 import { DeckComponent } from './deck/deck.component';
@@ -14,6 +15,11 @@ const routes: Routes = [
 @NgModule({
   declarations: [ListOfDecksComponent, DeckComponent],
   exports: [ListOfDecksComponent, DeckComponent],
-  imports: [CommonModule, RouterModule.forChild(routes)],
+  imports: [
+    CommonModule,
+    RouterModule.forChild(routes),
+    FormsModule,
+    ReactiveFormsModule,
+  ],
 })
 export class ListOfDecksModule {}
