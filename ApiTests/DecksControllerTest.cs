@@ -28,7 +28,7 @@ public class DecksControllerTest : IDisposable
     [Fact]
     public async Task GetDeck()
     {
-        await DeckFixure();
+        await DeckFixture();
         var result = await _controller.Get(_cancellationToken);
         var decks = (result as OkObjectResult)?.Value as ICollection<DecksResult>;
         decks.Should().NotBeNull();
@@ -45,7 +45,7 @@ public class DecksControllerTest : IDisposable
         decks!.Count.Should().Be(2);
     }
 
-    private async Task<Deck> DeckFixure()
+    private async Task<Deck> DeckFixture()
     {
         var d = new Deck
         {
