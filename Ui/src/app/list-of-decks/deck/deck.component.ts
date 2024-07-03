@@ -13,6 +13,7 @@ import { ListsOfDecksService } from '../lists-of-decks.service';
 })
 export class DeckComponent {
   @Input() deck!: Deck;
+  @Input() playSingleGame = false;
 
   constructor(
     private decksService: ListsOfDecksService,
@@ -37,7 +38,9 @@ export class DeckComponent {
   }
 
   playGame(game: GameToPlay) {
-    this.gamesRepo.addGame(game);
-    this.router.navigateByUrl('/games');
+    if (this.playSingleGame) {
+      this.gamesRepo.addGame(game);
+      this.router.navigateByUrl('/games');
+    }
   }
 }

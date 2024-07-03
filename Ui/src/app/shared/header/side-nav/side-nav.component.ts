@@ -3,6 +3,7 @@ import { Component, EventEmitter, HostListener, Input, Output } from '@angular/c
 import { Router } from "@angular/router";
 import { GamesRepository } from "../../../games/games.repository";
 import { GamesService } from "../../../games/games.service";
+import { filter, takeWhile } from 'rxjs';
 
 @Component({
   selector: 'app-side-nav',
@@ -38,8 +39,7 @@ export class SideNavComponent {
   @Output() closeSideNavEvent = new EventEmitter<void>();
   games$ = this.gameRepo.gamesToPlay$;
 
-  constructor(private gameRepo: GamesRepository, private gameService: GamesService, private router: Router) {
-  }
+  constructor(private gameRepo: GamesRepository, private gameService: GamesService, private router: Router) { }
 
   @HostListener('document:keydown.escape')
   closeSideNav(): void {
@@ -54,8 +54,8 @@ export class SideNavComponent {
   }
 
   clearGames() {
-    this.gameService.clearSideNavGames();
     this.closeSideNav();
+    this.gameService.clearSideNavGames();
   }
 
   playGames() {

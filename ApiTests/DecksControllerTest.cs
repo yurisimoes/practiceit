@@ -29,6 +29,7 @@ public class DecksControllerTest : IDisposable
     public async Task GetDeck()
     {
         await DeckFixture();
+        //TODO: apply search
         var result = await _controller.Get(_cancellationToken);
         var decks = (result as OkObjectResult)?.Value as ICollection<DecksResult>;
         decks.Should().NotBeNull();
@@ -39,6 +40,7 @@ public class DecksControllerTest : IDisposable
     public async Task GetDecks()
     {
         await DecksFixure();
+        //TODO: apply search
         var result = await _controller.Get(_cancellationToken);
         var decks = (result as OkObjectResult)?.Value as ICollection<DecksResult>;
         decks.Should().NotBeNull();

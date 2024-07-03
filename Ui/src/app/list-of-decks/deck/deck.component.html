@@ -2,7 +2,7 @@
   <div class="relative w-16 h-24 bg-primary rounded-lg overflow-hidden">
     <div class="absolute inset-0 flex items-center justify-center">
       <div [ngClass]="{'bg-primary': gamesService.isGameAdded(deck.id), 'bg-white': !gamesService.isGameAdded(deck.id)}"
-           (click)="gamesService.playGames(deck)" class="w-12 h-16 cursor-pointer rounded-full flex items-center justify-center">
+           (click)="gamesService.addDeckToPlay(deck)" class="w-12 h-16 cursor-pointer rounded-full flex items-center justify-center">
         <p [ngClass]="{'text-white': gamesService.isGameAdded(deck.id)}"
            class="text-black text-xl font-semibold select-none">{{deck.cardsCount}}</p>
       </div>
@@ -19,6 +19,6 @@
         <button type="button" (click)="deleteDeck(deck.id)">delete</button>
       </div>
     </div>
-    <p class="mt-1 text-gray-400 text-sm break-words overflow-hidden line-clamp-3">{{deck.description}}</p>
+    <p class="mt-1 text-gray-400 text-sm break-all overflow-hidden word-wrap line-clamp-3">{{deck.description}}</p>
   </div>
 </div>

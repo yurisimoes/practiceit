@@ -1,5 +1,7 @@
 import { Component, HostListener } from '@angular/core';
 import { GamesRepository } from "../../games/games.repository";
+import { filter, take, takeWhile, tap } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-header',
@@ -7,11 +9,16 @@ import { GamesRepository } from "../../games/games.repository";
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
-  showSideNav: boolean = false;
+  showSideNav = false;
   isOpenDropdown = false;
   totalOfGamesToPlay$ = this.gamesRepo.totalOfGamesToPlay$
 
   constructor(public gamesRepo: GamesRepository) {
+    this.totalOfGamesToPlay$
+      .pipe(
+        takeUntilDestroyed(),
+        filter((g) => g === 0),
+        tap(() => this.showSideNav = false)).subscribe();
   }
 
   toggleDropdown() {

@@ -1,7 +1,7 @@
 <nav class="pb-4 text-secondary z-40 sticky top-0 w-full">
   <div class="flex bg-gray-50 items-center justify-between p-4">
     <div>
-      <span class="text-xl font-bold">PracticeIt</span>
+      <button class="text-xl font-bold" [routerLink]="'lists-of-decks'">PracticeIt</button>
     </div>
     <div class="flex items-center space-x-4">
       <div *ngIf="totalOfGamesToPlay$ | async as n" class="relative">

@@ -14,8 +14,6 @@ export class GamesService {
   getGames(ids: any[]) {
     return this.http.post<Game[]>('/api/games', ids).pipe(
       tap((x) => {
-        console.log(        x.map(x => x.title.toLowerCase()))
-        x.forEach(x => x.title.toLowerCase());
         this.repo.setGames(x);
       })
     );
@@ -25,7 +23,7 @@ export class GamesService {
     return this.decksAddedIds.includes(id);
   }
 
-  playGames(game: GameToPlay) {
+  addDeckToPlay(game: GameToPlay) {
     const index = this.decksAddedIds.indexOf(game.id);
     if (index !== -1) {
       this.decksAddedIds.splice(index, 1);
