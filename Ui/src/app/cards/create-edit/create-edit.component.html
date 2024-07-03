@@ -1,21 +1,25 @@
 <form (ngSubmit)="save()" [formGroup]="form">
   <div class="px-4">
-    <label>Title</label>
-    <input type="text" class="my-input text-center" formControlName="title">
+    <div>
+      <label>Title</label>
+      <input type="text" class="my-input text-center" formControlName="title">
+    </div>
+    <div>
+      <label>Description</label>
+      <span class="ml-1 text-gray-400 text-sm">(optional)</span>
+      <textarea type="text" class="my-input h-16" appTextAreaAutoresize formControlName="description"></textarea>
+    </div>
+    <div>
+      <button type="button" (click)="addNewCard()">Add new card</button>
+      <button type="submit">Save</button>
+    </div>
   </div>
-  <div class="px-4">
-    <label>Description</label>
-    <span class="ml-1 text-gray-400 text-sm">(optional)</span>
-    <textarea type="text" class="my-input h-16" appTextAreaAutoresize formControlName="description"></textarea>
-  </div>
-  <div class="px-4">
-    <button type="button" (click)="addNewCard()">Add new card</button>
-    <button type="submit">Save</button>
-  </div>
-<!--  justify-center-->
-  <div formArrayName="cards" class="flex flex-wrap">
-    <div *ngFor="let _ of cards.controls; let i = index" class="px-3.5 py-2 flex items-center">
-      <app-card [cardsForm]="getCardsControl(i)" [showRemoveButton]="cards.length > 1" (remove)="removeCard(i)"></app-card>
+  <div class="overflow-y-scroll h-[40rem]">
+    <div formArrayName="cards" class="flex flex-wrap">
+      <div *ngFor="let _ of cards.controls; let i = index;" class="pl-4 py-2">
+        <app-card [cardsForm]="getCardsControl(i)" [showRemoveButton]="cards.length > 1"
+                  (remove)="removeCard(i)"></app-card>
+      </div>
     </div>
   </div>
 </form>

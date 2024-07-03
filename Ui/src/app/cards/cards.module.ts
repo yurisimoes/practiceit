@@ -19,7 +19,7 @@ const routes: Routes = [
     CommonModule,
     ReactiveFormsModule,
     RouterModule.forChild(routes),
-    SharedModule,
+    SharedModule
   ],
 })
 export class CardsModule {}

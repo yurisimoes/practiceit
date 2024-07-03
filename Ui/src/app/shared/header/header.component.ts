@@ -38,8 +38,4 @@ export class HeaderComponent {
   toggleSideNav(): void {
     this.showSideNav = !this.showSideNav;
   }
-
-  stopPropagation(event: MouseEvent) {
-    event.stopPropagation();
-  }
 }
