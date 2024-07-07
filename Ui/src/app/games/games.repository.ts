@@ -25,6 +25,8 @@ export interface GameToPlay {
   title: string;
   description: string;
   cardsCount: number;
+  userId: number;
+  username: string;
 }
 
 const store = createStore(

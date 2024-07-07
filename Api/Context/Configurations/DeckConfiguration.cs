@@ -10,5 +10,6 @@ public class DeckConfiguration : IEntityTypeConfiguration<Deck>
     {
         builder.Property(x => x.Id).UseIdentityAlwaysColumn();
         builder.HasMany(x => x.Cards).WithOne().HasForeignKey(x => x.DeckId);
+        builder.HasOne(x => x.User).WithMany().HasForeignKey(x => x.UserId);
     }
 }

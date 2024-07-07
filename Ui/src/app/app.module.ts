@@ -9,6 +9,7 @@ import { HeaderModule } from "./shared/header/header.module";
 import { Icons } from "./shared/Icons";
 import { SharedModule } from './shared/shared.module';
 import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { GoogleLoginProvider, SocialAuthServiceConfig } from '@abacritt/angularx-social-login';
 
 @NgModule({
   declarations: [AppComponent],
@@ -21,7 +22,24 @@ import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontaweso
     FontAwesomeModule,
     HeaderModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        lang: 'en',
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider('googleid', {oneTapEnabled: false})
+          }
+        ],
+        onError: (err) => {
+          console.error(err);
+        }
+      } as SocialAuthServiceConfig,
+    }
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {

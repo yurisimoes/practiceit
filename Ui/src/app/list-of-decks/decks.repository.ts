@@ -18,7 +18,7 @@ import {
   updatePaginationData,
   withPagination,
 } from '@ngneat/elf-pagination';
-import { tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { PaginatedData } from '../shared/models/PaginatedData';
 
 export interface Deck {
@@ -26,6 +26,8 @@ export interface Deck {
   title: string;
   description: string;
   cardsCount: number;
+  userId: number;
+  username: string;
 }
 
 const store = createStore(
@@ -48,10 +50,9 @@ export class DecksRepository {
     store.update(deleteEntities(id));
   }
 
-  get(obj: { search?: string; page?: number; perPage?: number }) {
-    console.log(obj)
+  get(obj: { userId?: number, search?: string; page?: number; perPage?: number }, searchUrl: string): Observable<Deck[]> {
     return this.http
-      .get<PaginatedData<Deck>>(`/api/decks?${new URLSearchParams(obj as any)}`)
+      .get<PaginatedData<Deck>>(`${searchUrl}${new URLSearchParams(obj as any)}`)
       .pipe(
         tap((paginatedData) => {
           const { data, ...paginationData } = paginatedData;

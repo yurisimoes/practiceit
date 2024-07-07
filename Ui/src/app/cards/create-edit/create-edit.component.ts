@@ -36,6 +36,7 @@ export class CreateEditComponent {
     this.form = this.fb.group({
       title: [''],
       description: [''],
+      isPrivate: [false],
       cards: !this.id ? this.fb.array([this.createNewCard()]) : this.fb.array([])
     });
   }

@@ -16,6 +16,7 @@ import {
 } from 'rxjs';
 import { DecksRepository } from './decks.repository';
 import { ListsOfDecksService } from './lists-of-decks.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-list-of-decks',
@@ -32,7 +33,8 @@ export class ListOfDecksComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(
     private decksService: ListsOfDecksService,
-    private repo: DecksRepository
+    private repo: DecksRepository,
+    private router: Router
   ) {
     this.observer = new IntersectionObserver(
       ([entry]) => {
@@ -72,7 +74,7 @@ export class ListOfDecksComponent implements OnInit, AfterViewInit, OnDestroy {
           //   this.loadingDecks = false
           //   return [];
           // }
-          return this.repo.get({ search, page });
+          return this.repo.get({ search, page }, '/api/decks?');
         })
       )
        .subscribe((_) => (this.loadingDecks = false));
@@ -81,5 +83,9 @@ export class ListOfDecksComponent implements OnInit, AfterViewInit, OnDestroy {
   nextPage() {
     if (this.repo.hasPage(this.repo.currentPage) && !this.repo.isLast)
       this.currentPage$.next(this.currentPage$.value + 1);
+  }
+
+  originalUserDecks(userId: number) {
+    this.router.navigateByUrl(`/other-user-decks/${userId}`)
   }
 }

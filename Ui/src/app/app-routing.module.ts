@@ -23,7 +23,7 @@ const routes: Routes = [
     path: 'create-cards-deck',
     loadChildren: () =>
       import('./cards/cards.module').then((m) => m.CardsModule),
-  },
+  }
 ];
 
 @NgModule({

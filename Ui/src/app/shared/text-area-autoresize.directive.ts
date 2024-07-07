@@ -16,7 +16,7 @@ export class TextAreaAutoresizeDirective implements AfterViewInit {
   }
 
   resize() {
-    this.elementRef.nativeElement.style.height = 'auto';
+    this.elementRef.nativeElement.style.height = '112px';
     this.elementRef.nativeElement.style.height = Math.min(this.elementRef.nativeElement.scrollHeight, 200) + 'px';
   }
 }

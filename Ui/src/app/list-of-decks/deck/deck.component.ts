@@ -1,10 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { tap } from 'rxjs';
 import { GamesRepository, GameToPlay } from '../../games/games.repository';
 import { GamesService } from "../../games/games.service";
-import { Deck, DecksRepository } from '../decks.repository';
-import { ListsOfDecksService } from '../lists-of-decks.service';
+import { Deck } from '../decks.repository';
 
 @Component({
   selector: 'app-deck',
@@ -16,26 +14,10 @@ export class DeckComponent {
   @Input() playSingleGame = false;
 
   constructor(
-    private decksService: ListsOfDecksService,
-    private repo: DecksRepository,
     public gamesService: GamesService,
     private router: Router,
-    private gamesRepo: GamesRepository
-  ) {}
-
-  deleteDeck(deckId: number) {
-    this.decksService
-      .deleteDeck(deckId)
-      .pipe(
-        tap({
-          complete: () => {
-            this.gamesRepo.deleteGame(deckId);
-            this.repo.deleteDeck(deckId);
-          },
-        })
-      )
-      .subscribe();
-  }
+    private gamesRepo: GamesRepository,
+  ) { }
 
   playGame(game: GameToPlay) {
     if (this.playSingleGame) {

@@ -10,7 +10,7 @@
           class="absolute top-0 right-0 inline-flex items-center justify-center w-5 h-5 text-xs font-medium bg-secondary text-white rounded-full transform -translate-y-1/2">{{n}}</span>
       </div>
       <fa-icon id="dropdown-button" [ngClass]="{'bg-gray-200': isOpenDropdown}" class="text-2xl cursor-pointer active:bg-gray-200 hover:bg-gray-200 rounded-full px-2" (click)="toggleDropdown()" icon="grip"></fa-icon>
-      <button type="button" class="text-lg ml-4">Sign In</button>
+      <asl-google-signin-button (click)="login()"  type='standard' size='medium'></asl-google-signin-button>
     </div>
   </div>
 </nav>

@@ -16,4 +16,8 @@ export class RoutesDropdownComponent {
   createNewCardDeck() {
     this.router.navigateByUrl('/create-cards-deck').then(() => this.isOpen = false);
   }
+
+  personalDecks() {
+    this.router.navigateByUrl('/personal-decks').then(() => this.isOpen = false);
+  }
 }

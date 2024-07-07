@@ -2,8 +2,8 @@ namespace Api;
 
 public static class Utils
 {
-    public static string StrOr(this string str, string otherString)
-    {
-        return string.IsNullOrWhiteSpace(str) ? otherString : str;
+    public static int ToInt(this string? value)
+    { 
+        return int.Parse(value);
     }
 }

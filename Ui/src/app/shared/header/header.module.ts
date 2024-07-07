@@ -8,16 +8,18 @@ import { HeaderComponent } from './header.component';
 import { SideNavComponent } from './side-nav/side-nav.component';
 import { RoutesDropdownComponent } from './routes-dropdown/routes-dropdown.component';
 import { RoutesIconComponent } from './routes-icon/routes-icon.component';
+import { GoogleSigninButtonModule } from '@abacritt/angularx-social-login';
 
 @NgModule({
   declarations: [HeaderComponent, SideNavComponent, RoutesDropdownComponent, RoutesIconComponent],
   exports: [HeaderComponent],
-  imports: [
-    CommonModule,
-    RouterLink,
-    BrowserAnimationsModule,
-    FontAwesomeModule,
-    ListOfDecksModule,
-  ],
+    imports: [
+        CommonModule,
+        RouterLink,
+        BrowserAnimationsModule,
+        FontAwesomeModule,
+        ListOfDecksModule,
+        GoogleSigninButtonModule,
+    ],
 })
 export class HeaderModule {}

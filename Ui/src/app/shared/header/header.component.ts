@@ -1,7 +1,9 @@
 import { Component, HostListener } from '@angular/core';
 import { GamesRepository } from "../../games/games.repository";
-import { filter, take, takeWhile, tap } from 'rxjs';
+import { filter, switchMap, take, takeWhile, tap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { SocialAuthService } from '@abacritt/angularx-social-login';
+import { LoginService } from '../services/login.service';
 
 @Component({
   selector: 'app-header',
@@ -9,11 +11,12 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
+  subTitle?: string;
   showSideNav = false;
   isOpenDropdown = false;
   totalOfGamesToPlay$ = this.gamesRepo.totalOfGamesToPlay$
 
-  constructor(public gamesRepo: GamesRepository) {
+  constructor(public gamesRepo: GamesRepository, private authService: SocialAuthService, private loginService: LoginService) {
     this.totalOfGamesToPlay$
       .pipe(
         takeUntilDestroyed(),
@@ -38,4 +41,13 @@ export class HeaderComponent {
   toggleSideNav(): void {
     this.showSideNav = !this.showSideNav;
   }
+
+  login() {
+    this.authService.authState.pipe(switchMap((x) => {
+      return this.loginService.login(x.idToken);
+    })).subscribe();
+  }
+
+  private setSubTitleFromRoute() {}
+
 }
