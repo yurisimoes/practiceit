@@ -8,7 +8,7 @@ import { Deck } from '../../list-of-decks/decks.repository';
 })
 export class DeleteDialogComponent {
   @Output() confirm = new EventEmitter<any>();
-  deck?: Deck;
+  deck!: Deck;
 
   onConfirm() {
     this.confirm.emit(this.deck);

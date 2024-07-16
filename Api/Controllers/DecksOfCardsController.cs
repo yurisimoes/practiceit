@@ -1,4 +1,3 @@
-using System.Security.Claims;
 using Api.Context;
 using Api.Dtos.Cards;
 using Api.Entities.Cards;
@@ -6,7 +5,6 @@ using Api.Services;
 using Mapster;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.JsonWebTokens;
 
 namespace Api.Controllers;
 

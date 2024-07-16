@@ -40,6 +40,11 @@ public class DecksController : BaseController
     [HttpGet("[action]")]
     public async Task<IActionResult> PersonalDecks([FromQuery] string? search, CancellationToken ct, [FromQuery] int page = 1, [FromQuery] int perPage = 30)
     {
+        if (!_userService.IsAuthenticated)
+        {
+            return NotFound();
+        }
+        
         search = search?.ToLower();
         var decks = _dbContext.DecksOfCards
             .AsSplitQuery()

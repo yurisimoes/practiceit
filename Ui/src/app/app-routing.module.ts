@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ListOfDecksComponent } from './list-of-decks/list-of-decks.component';
+import { loginGuard } from './shared/guards/login.guard';
 
 const routes: Routes = [
   {
@@ -23,7 +25,8 @@ const routes: Routes = [
     path: 'create-cards-deck',
     loadChildren: () =>
       import('./cards/cards.module').then((m) => m.CardsModule),
-  }
+    canActivate: [loginGuard]
+  },
 ];
 
 @NgModule({

@@ -4,6 +4,10 @@ import { faCirclePlus } from "@fortawesome/free-solid-svg-icons/faCirclePlus";
 import { faGrip } from "@fortawesome/free-solid-svg-icons/faGrip";
 import { faPlay } from "@fortawesome/free-solid-svg-icons/faPlay";
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons/faTrashCan';
+import { faPlus } from '@fortawesome/free-solid-svg-icons/faPlus';
+import { faUser } from '@fortawesome/free-solid-svg-icons/faUser';
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons/faPenToSquare';
+import { faList } from '@fortawesome/free-solid-svg-icons/faList';
 
 export const Icons = {
   faBars,
@@ -11,5 +15,9 @@ export const Icons = {
   faCirclePlus,
   faBroom,
   faPlay,
-  faTrashCan
+  faTrashCan,
+  faPlus,
+  faUser,
+  faPenToSquare,
+  faList
 }

@@ -1,7 +1,7 @@
 <form [formGroup]="cardsForm">
   <div class="bg-white rounded-lg shadow-md px-4 max-w-[12.2rem] h-40 mx-auto relative">
     <div *ngIf="showRemoveButton" class="flex justify-end">
-      <button  (click)="remove.emit()" class="absolute top-0 right-2">x</button>
+      <fa-icon (click)="remove.emit()" class="absolute top-0 cursor-pointer text-red-500" icon="trash-can"></fa-icon>
     </div>
 
     <div class="flex flex-col justify-center h-full space-y-4">

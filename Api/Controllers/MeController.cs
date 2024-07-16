@@ -8,12 +8,10 @@ namespace Api.Controllers;
 
 public class MeController : BaseController
 {
-    private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IUserService _userService;
 
     public MeController(IHttpContextAccessor httpContextAccessor, IUserService userService)
     {
-        _httpContextAccessor = httpContextAccessor;
         _userService = userService;
     }
 
@@ -22,9 +20,8 @@ public class MeController : BaseController
     {
         var currentUser = new UserDto
         {
-            Id = _httpContextAccessor.HttpContext!.User.FindFirstValue(JwtRegisteredClaimNames.Sub)!,
-            Role = _httpContextAccessor.HttpContext!.User.FindFirstValue(ClaimTypes.Role)!,
-            Name = _httpContextAccessor.HttpContext!.User.FindFirstValue(ClaimTypes.Name)!,
+            Id = _userService.UserId,
+            Name = _userService.Name,
             IsAuthenticated = _userService.IsAuthenticated
         };
         return currentUser;

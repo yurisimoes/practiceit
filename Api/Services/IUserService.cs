@@ -4,6 +4,7 @@ public interface IUserService
 {
     int? UserId { get; }
     bool IsAdmin { get; }
+    public string Name { get; }
     bool IsAuthenticated { get; }
     string ClaimCurrentUser(string claimName);
     IEnumerable<string> ClaimsCurrentUser(string claimName);

@@ -36,10 +36,10 @@ public class AuthController : BaseController
         _cache = cache;
     }
 
-    [HttpPost]
+    [HttpPost("[action]")]
     public async Task<IActionResult> SignInGoogle([FromBody] Login login)
     {
-        if (string.IsNullOrWhiteSpace(login.IdToken)) return RedirectWithLoginResult(false);
+        if (string.IsNullOrWhiteSpace(login.IdToken)) return BadRequest();
         
         var jwks = await GetGoogleKeys();
         var validationParameters = new TokenValidationParameters
@@ -55,12 +55,12 @@ public class AuthController : BaseController
         
         var handler = new JwtSecurityTokenHandler();
         var result = await handler.ValidateTokenAsync(login.IdToken, validationParameters);
-        if (!result.IsValid) return RedirectWithLoginResult(false);
+        if (!result.IsValid) return BadRequest();
 
         var email = result.ClaimsIdentity.FindFirst(JwtRegisteredClaimNames.Email)?.Value;
         var name = result.ClaimsIdentity.FindFirst(JwtRegisteredClaimNames.Name)?.Value;
         var googleId = result.ClaimsIdentity.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
-        if (name == null || email == null || googleId == null) return RedirectWithLoginResult(false);
+        if (name == null || email == null || googleId == null) return BadRequest();
         
         var user = await _dbContext.Users.FirstOrDefaultAsync(x => x.Email == email);
         
@@ -81,20 +81,14 @@ public class AuthController : BaseController
         var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
         var claimsPrincipal = new ClaimsPrincipal(claimsIdentity);
         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
-        return RedirectWithLoginResult(true);
+        return Ok();
     }
 
-    private IActionResult RedirectWithLoginResult(bool shouldReturn)
+    [HttpGet("[action]")]
+    public async Task<IActionResult> GoogleSignOut()
     {
-        Response.Cookies.Append("PracticeIt__LoginSuccessful", shouldReturn.ToString(), new CookieOptions
-        {
-            HttpOnly = false,
-            Path = "/",
-            Secure = true,
-            Expires = _clock.GetCurrentInstant().Plus(Duration.FromMinutes(1)).ToDateTimeOffset()
-        });
-        Response.Headers[HeaderNames.Location] = _configuration["http://Localhost:4200"];
-        return StatusCode(StatusCodes.Status303SeeOther);
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        return NoContent();
     }
 
     public async Task<JsonWebKeySet> GetGoogleKeys()

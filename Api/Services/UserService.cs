@@ -25,9 +25,11 @@ public class UserService : IUserService, IService
 
     public bool IsAdmin => HasRole("Admin");
 
+    public string? Name => _httpContextAccessor.HttpContext!.User.FindFirstValue(ClaimTypes.Name)!;
+
     public string ClaimCurrentUser(string claimName)
     {
-        return _httpContextAccessor.HttpContext.User.FindFirstValue(claimName);
+        return _httpContextAccessor.HttpContext?.User.FindFirstValue(claimName);
     }
 
     public IEnumerable<string> ClaimsCurrentUser(string claimName)

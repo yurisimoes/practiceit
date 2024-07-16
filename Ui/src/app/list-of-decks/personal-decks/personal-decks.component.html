@@ -9,9 +9,8 @@
       <div *ngFor="let d of decks" class="w-1/3 px-2 pb-2">
         <app-deck [deck]="d" [playSingleGame]="true">
           <div class="parent">
-            <button type="button" [routerLink]="['/' + d.id, 'edit']">edit</button>
-            <!--        <button type="button" (click)="deleteDeck(deck.id)">delete</button>-->
-            <button type="button" (click)="openDialog(d)">delete</button>
+            <fa-icon [routerLink]="['/' + d.id, 'edit']" class="cursor-pointer text-primary mr-2" icon="pen-to-square"></fa-icon>
+            <fa-icon (click)="openDialog(d)" class="cursor-pointer text-red-500" icon="trash-can"></fa-icon>
             <ng-template #dialogContainer></ng-template>
           </div>
         </app-deck>

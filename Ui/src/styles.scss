@@ -19,3 +19,9 @@ body {
   font-family: "Open Sans", sans-serif;
   @apply bg-gray-50 text-gray-700;
 }
+
+button {
+  @apply transform transition active:scale-95
+}
+
+

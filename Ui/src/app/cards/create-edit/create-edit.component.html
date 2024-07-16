@@ -7,7 +7,7 @@
     <div>
       <label>Description</label>
       <span class="ml-1 text-gray-400 text-sm">(optional)</span>
-      <textarea type="text" class="my-input" appTextAreaAutoresize formControlName="description"></textarea>
+      <textarea type="text" class="my-input h-28" formControlName="description"></textarea>
     </div>
     <div class="py-2 flex items-center">
       <label for="toggle" class="flex items-center cursor-pointer">
@@ -24,12 +24,15 @@
     </span>
       </label>
     </div>
-    <div>
-      <button type="button" (click)="addNewCard()">Add new card</button>
-      <button type="submit">Save</button>
+    <div class="flex">
+      <button type="button" (click)="addNewCard()" class="flex items-center px-4 py-2 bg-primary text-white rounded-full hover:bg-blue-600">
+        <fa-icon class="text-lg" icon="plus"></fa-icon>
+        <span class="ml-2">Add Card</span>
+      </button>
+      <button type="submit" class="ml-2 px-4 py-2 bg-green-500 text-white rounded-full">Save</button>
     </div>
   </div>
-  <div class="overflow-y-scroll h-[40rem]">
+  <div class="overflow-y-scroll h-[33rem]">
     <div formArrayName="cards" class="flex flex-wrap">
       <div *ngFor="let _ of cards.controls; let i = index;" class="pl-4 py-2">
         <app-card [cardsForm]="getCardsControl(i)" [showRemoveButton]="cards.length > 1"

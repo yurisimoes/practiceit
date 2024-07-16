@@ -7,14 +7,24 @@
       <div *ngIf="totalOfGamesToPlay$ | async as n" class="relative">
         <fa-icon class="text-lg mr-4 cursor-pointer" (click)="toggleSideNav()" icon="bars"></fa-icon>
         <span
-          class="absolute top-0 right-0 inline-flex items-center justify-center w-5 h-5 text-xs font-medium bg-secondary text-white rounded-full transform -translate-y-1/2">{{n}}</span>
+          class="absolute top-0 right-0 inline-flex items-center justify-center w-5 h-5 text-xs font-medium bg-secondary text-white rounded-full transform -translate-y-1/2">{{ n }}</span>
       </div>
-      <fa-icon id="dropdown-button" [ngClass]="{'bg-gray-200': isOpenDropdown}" class="text-2xl cursor-pointer active:bg-gray-200 hover:bg-gray-200 rounded-full px-2" (click)="toggleDropdown()" icon="grip"></fa-icon>
-      <asl-google-signin-button (click)="login()"  type='standard' size='medium'></asl-google-signin-button>
+      <ng-container *ngIf="isAuthenticated$ | async else googleLogin">
+        <ng-container *ngIf="loggedUser$ | async as user">
+          <fa-icon id="dropdown-button" [ngClass]="{'bg-gray-200': isOpenDropdown}"
+                   class="text-2xl cursor-pointer active:bg-gray-200 hover:bg-gray-200 rounded-full px-2"
+                   (click)="toggleDropdown()" icon="grip">
+          </fa-icon>
+          {{ user.name }}
+        </ng-container>
+        <button type="button" (click)="logout()">logout</button>
+      </ng-container>
+      <ng-template #googleLogin>
+        <asl-google-signin-button (click)="login()" type='standard' size='medium'></asl-google-signin-button>
+      </ng-template>
     </div>
   </div>
 </nav>
-<app-routes-dropdown class="absolute top-14 right-0 z-50" [isOpen]="isOpenDropdown"
-></app-routes-dropdown>
+<app-routes-dropdown class="absolute top-14 right-0 z-50" [isOpen]="isOpenDropdown"></app-routes-dropdown>
 
 <app-side-nav [showSideNav]="showSideNav" (closeSideNavEvent)="toggleSideNav()"></app-side-nav>

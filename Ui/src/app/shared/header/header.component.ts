@@ -1,9 +1,11 @@
 import { Component, HostListener } from '@angular/core';
 import { GamesRepository } from "../../games/games.repository";
-import { filter, switchMap, take, takeWhile, tap } from 'rxjs';
+import { concat, filter, switchMap, tap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { SocialAuthService } from '@abacritt/angularx-social-login';
 import { LoginService } from '../services/login.service';
+import { LoginRepository } from '../services/login.repository';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -11,17 +13,25 @@ import { LoginService } from '../services/login.service';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
-  subTitle?: string;
   showSideNav = false;
   isOpenDropdown = false;
+  loggedUser$ = this.loginRepo.login$;
+  isAuthenticated$ = this.loginRepo.isAuthenticated$;
   totalOfGamesToPlay$ = this.gamesRepo.totalOfGamesToPlay$
 
-  constructor(public gamesRepo: GamesRepository, private authService: SocialAuthService, private loginService: LoginService) {
+  constructor(
+    public gamesRepo: GamesRepository,
+    private authService: SocialAuthService,
+    private loginService: LoginService,
+    private loginRepo: LoginRepository,
+    private router: Router) {
     this.totalOfGamesToPlay$
       .pipe(
         takeUntilDestroyed(),
         filter((g) => g === 0),
-        tap(() => this.showSideNav = false)).subscribe();
+        tap(() => {
+          this.showSideNav = false
+        })).subscribe();
   }
 
   toggleDropdown() {
@@ -43,11 +53,18 @@ export class HeaderComponent {
   }
 
   login() {
-    this.authService.authState.pipe(switchMap((x) => {
-      return this.loginService.login(x.idToken);
-    })).subscribe();
+    this.authService.authState.pipe(
+      switchMap((x) => {
+        return concat(this.loginService.login(x.idToken), this.loginService.loggedUser())
+      })
+    ).subscribe();
   }
 
-  private setSubTitleFromRoute() {}
-
+  logout() {
+    // TODO: LIB NO WORKING;
+    // this.authService.signOut(true);
+    this.loginService.logout().pipe(switchMap(() => {
+      return this.loginService.loggedUser()
+    })).subscribe(_ => this.router.navigateByUrl('/lists-of-decks').then(_ => location.reload()))
+  }
 }

@@ -16,6 +16,11 @@ public class GamesController : BaseController
     [HttpPost]
     public async Task<IActionResult> GetGames([FromBody] int[] ids, CancellationToken ct)
     {
+        if (!ids.Any())
+        {
+            return NotFound();
+        }
+        
         var decks = _dbContext.DecksOfCards
             .Where(deck => ids.Contains(deck.Id))
             .Include(x => x.Cards)

@@ -10,13 +10,13 @@ import {
   BehaviorSubject,
   combineLatest,
   debounceTime,
-  distinctUntilChanged, startWith,
-  switchMap,
+  distinctUntilChanged, startWith, Subject,
+  switchMap, take, takeUntil,
   tap,
 } from 'rxjs';
 import { DecksRepository } from './decks.repository';
-import { ListsOfDecksService } from './lists-of-decks.service';
 import { Router } from '@angular/router';
+import { LoginRepository } from '../shared/services/login.repository';
 
 @Component({
   selector: 'app-list-of-decks',
@@ -32,15 +32,15 @@ export class ListOfDecksComponent implements OnInit, AfterViewInit, OnDestroy {
   private observer!: IntersectionObserver;
 
   constructor(
-    private decksService: ListsOfDecksService,
     private repo: DecksRepository,
-    private router: Router
+    private router: Router,
+    private loginRepository: LoginRepository
   ) {
     this.observer = new IntersectionObserver(
       ([entry]) => {
         entry.isIntersecting && this.nextPage();
       },
-      { root: null }
+      {root: null}
     );
   }
 
@@ -68,16 +68,16 @@ export class ListOfDecksComponent implements OnInit, AfterViewInit, OnDestroy {
       ),
     ])
       .pipe(
-        switchMap(([page,search]) => {
+        switchMap(([page, search]) => {
           //TODO: at some point this is gonna work, just don't know when
           // if (search == '') {
           //   this.loadingDecks = false
           //   return [];
           // }
-          return this.repo.get({ search, page }, '/api/decks?');
+          return this.repo.get({search, page}, '/api/decks?');
         })
       )
-       .subscribe((_) => (this.loadingDecks = false));
+      .subscribe((_) => (this.loadingDecks = false));
   }
 
   nextPage() {
@@ -86,6 +86,12 @@ export class ListOfDecksComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   originalUserDecks(userId: number) {
-    this.router.navigateByUrl(`/other-user-decks/${userId}`)
+    this.loginRepository.userId$.pipe(take(1), tap((x) => {
+      if (x === userId) {
+        this.router.navigateByUrl('personal-decks')
+      } else {
+        this.router.navigateByUrl(`/other-user-decks/${userId}`)
+      }
+    })).subscribe()
   }
 }

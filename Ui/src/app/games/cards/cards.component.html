@@ -1,10 +1,27 @@
-<div>
-  title: {{deck.title}}
-  description: {{deck.description}}
-  <div *ngFor="let c of deck.cards; let i = index"
-       [ngClass]="{ 'correct': isInputCorrect(valueControls['control-' + i].value, c.value, i) }">
-    key: {{c.key}}
-    <input [formControl]="valueControls['control-' + i]" placeholder="Enter a value">
-    <!--    value: {{c.value}}-->
+<div class="px-4">
+  <div>
+    <h1 class="flex justify-center text-4xl text-primary my-2">{{ deck.title }}</h1>
+<!--    <p class="text-gray-500">{{ deck.description }}</p>-->
+    <div>
+      <p class="text-gray-500 cursor-pointer" (click)="toggleCollapse()">
+        {{ isCollapsed ? (deck.description | slice:0:247) + '...' : deck.description }}
+      </p>
+    </div>
+  </div>
+  <div class="flex flex-wrap mt-2">
+    <div
+      class="bg-primary rounded-lg shadow-md px-4 h-40 max-w-[12.2rem] mx-auto relative cursor-pointer transition-transform duration-300 focusable"
+      *ngFor="let c of deck.cards; let i = index"
+      [ngClass]="{
+       'bg-secondary scale-105 shadow-lg': selectedCardIndex === i,
+       'correct': isInputCorrect(valueControls['control-' + i].value, i)
+     }"
+      (click)="selectCard(i, $event)">
+      <div class="flex flex-col justify-center h-full">
+        <p class="flex justify-center text-2xl pb-2 text-white">{{ c.key }}</p>
+        <input id="control-{{i}}" class="text-center" [formControl]="valueControls['control-' + i]"
+               placeholder="Enter a value">
+      </div>
+    </div>
   </div>
 </div>
