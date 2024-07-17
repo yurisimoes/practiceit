@@ -1,7 +1,6 @@
 <div class="px-4">
   <div>
     <h1 class="flex justify-center text-4xl text-primary my-2">{{ deck.title }}</h1>
-<!--    <p class="text-gray-500">{{ deck.description }}</p>-->
     <div>
       <p class="text-gray-500 cursor-pointer" (click)="toggleCollapse()">
         {{ isCollapsed ? (deck.description | slice:0:247) + '...' : deck.description }}
