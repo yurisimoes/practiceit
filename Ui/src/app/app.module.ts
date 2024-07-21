@@ -10,6 +10,7 @@ import { Icons } from "./shared/Icons";
 import { SharedModule } from './shared/shared.module';
 import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { GoogleLoginProvider, SocialAuthServiceConfig } from '@abacritt/angularx-social-login';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [AppComponent],
@@ -31,7 +32,7 @@ import { GoogleLoginProvider, SocialAuthServiceConfig } from '@abacritt/angularx
         providers: [
           {
             id: GoogleLoginProvider.PROVIDER_ID,
-            provider: new GoogleLoginProvider('googleid', {oneTapEnabled: false})
+            provider: new GoogleLoginProvider(environment.googleClientId, {oneTapEnabled: false})
           }
         ],
         onError: (err) => {

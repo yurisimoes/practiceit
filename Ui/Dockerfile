@@ -12,6 +12,10 @@ RUN npm install --legacy-peer-deps
 # Copy the rest of the application code
 COPY . ./
 
+# Set environment variables and replace placeholders in environment.prod.ts
+ARG GOOGLE_CLIENT_ID
+RUN sed -i "s|GOOGLE_CLIENT_ID|${GOOGLE_CLIENT_ID}|g" src/environments/environment.prod.ts
+
 # Build the Angular app
 RUN ng build --configuration production
 

@@ -6,7 +6,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - ConnectionStrings__default=host=database;port=5432;database=practiceit;Username=postgres;Password=root;Include Error Detail=true;Timeout=15
-      - 
+      - OAuth__Google__ClientId=YOUR_GOOGLE_ID
     depends_on:
       database:
         condition: service_healthy
@@ -15,6 +15,8 @@ services:
     build:
       context: ./Ui
       dockerfile: Dockerfile
+      args:
+        GOOGLE_CLIENT_ID: YOUR_GOOGLE_ID
     depends_on:
       - backend
     ports:
