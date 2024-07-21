@@ -1,0 +1,40 @@
+services:
+  backend:
+    build:
+      context: ./Api
+      dockerfile: Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__default=host=database;port=5432;database=practiceit;Username=postgres;Password=root;Include Error Detail=true;Timeout=15
+      - 
+    depends_on:
+      database:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./Ui
+      dockerfile: Dockerfile
+    depends_on:
+      - backend
+    ports:
+      - "1234:81"
+  
+  database:
+    image: postgres:16.3-alpine3.18
+    restart: always
+    environment:
+      POSTGRES_DB: practiceit
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: root
+    expose:
+      - "5432"
+    volumes:
+      - "db-vol:/var/lib/postgresql/data"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+volumes:
+  db-vol:
